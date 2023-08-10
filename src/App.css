@@ -42,6 +42,7 @@
 
   .description-container {
     width: auto;
+    margin: unset;
     overflow-y: unset;
   }
 
