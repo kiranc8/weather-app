@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useContext } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -10,16 +10,16 @@ import {
 import { WeatherContext } from "./WeatherContext";
 import "./style.css";
 
-
-const Sidebar = ({data, fetchData}) => {
-  const {place,setPlace} = useContext(WeatherContext)
+const Sidebar = ({ data, fetchData }) => {
+    const [state,setState] = useState('');
+  const { setPlace } = useContext(WeatherContext);
   function formatDate(timestamp) {
     const options = { year: "numeric", month: "long", day: "numeric" };
-    const date = new Date(timestamp * 1000); 
+    const date = new Date(timestamp * 1000);
     return date.toLocaleDateString("en-US", options);
   }
   const convertTimestampToTime = (timestamp) => {
-    const date = new Date(timestamp * 1000); // Convert Unix timestamp to milliseconds
+    const date = new Date(timestamp * 1000);
     const hours = date.getHours();
     const minutes = date.getMinutes();
     const period = hours >= 12 ? "PM" : "AM";
@@ -28,20 +28,25 @@ const Sidebar = ({data, fetchData}) => {
     return `${formattedHours}:${formattedMinutes} ${period}`;
   };
 
-  const handleChange = (e) =>{
-    setPlace(e.target.value);
-  }
-  const handleClick = () =>{
-    console.log("12");
+  const handleChange = (e) => {
+    setState(e.target.value);
+  };
+  const handleClick = () => {
+    setPlace(state);
     fetchData();
-  }
+  };
   return (
     <div>
       <div className="search-bar-container">
         <div className="search-bar">
-          <input type="text" className="search-input" placeholder="Search..."  onChange={handleChange}/>
+          <input
+            type="text"
+            className="search-input"
+            placeholder="Search..."
+            onChange={handleChange}
+          />
           <button className="search-button" onClick={handleClick}>
-            <i className="fa fa-search"></i> {/* Font Awesome search icon */}
+            <i className="fa fa-search"></i>
           </button>
         </div>
       </div>
@@ -66,10 +71,22 @@ const Sidebar = ({data, fetchData}) => {
             </div>
             <hr className="horizontal-line" />
             <div>
-                <p><FontAwesomeIcon icon={faTemperatureHigh} /> Min Temp : {data.main.temp_min} °C</p>
-                <p><FontAwesomeIcon icon={faThermometerHalf} /> Max Temp : {data.main.temp_max} °C</p>
-                <p><FontAwesomeIcon icon={faSun} /> Sunrise : {convertTimestampToTime(data.sys.sunrise)} </p>
-                <p><FontAwesomeIcon icon={faMoon} /> Sunset : {convertTimestampToTime(data.sys.sunset)}</p>
+              <p>
+                <FontAwesomeIcon icon={faTemperatureHigh} /> Min Temp :{" "}
+                {data.main.temp_min} °C
+              </p>
+              <p>
+                <FontAwesomeIcon icon={faThermometerHalf} /> Max Temp :{" "}
+                {data.main.temp_max} °C
+              </p>
+              <p>
+                <FontAwesomeIcon icon={faSun} /> Sunrise :{" "}
+                {convertTimestampToTime(data.sys.sunrise)}{" "}
+              </p>
+              <p>
+                <FontAwesomeIcon icon={faMoon} /> Sunset :{" "}
+                {convertTimestampToTime(data.sys.sunset)}
+              </p>
             </div>
           </div>
         )}

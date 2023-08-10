@@ -9,7 +9,6 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import "./style.css";
 const Details = ({ data }) => {
-  console.log(data);
   return (
     <div className="details-container">
       {data && (
@@ -59,11 +58,10 @@ const Details = ({ data }) => {
           <div className="temp-card">
             <h4>
               <FontAwesomeIcon
-                icon={faCompressArrowsAlt} // Choose an appropriate pressure-related icon
+                icon={faCompressArrowsAlt}
                 className="pressure-icon"
-              />
-              {" "}
-               pressure
+              />{" "}
+              pressure
             </h4>
             <div className="temp-detail">
               <p>{data.main.pressure} Pa</p>

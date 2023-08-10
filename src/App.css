@@ -1,45 +1,55 @@
-*{
+* {
   font-family: 'Poppins', sans-serif;
 }
-.wrapper{
+
+.wrapper {
   background: #212429;
   color: #ffff;
   display: flex;
   height: 100vh;
 }
-.sidebar{
+
+.sidebar {
   width: 300px;
   margin: 0.5rem;
   background: #212429;
   box-shadow: 5px 5px 10px #171a1d,
     -5px -5px 10px #2b2e35;
-    border-radius: 20px;
-  
+  border-radius: 20px;
+
 }
-.description-container{
+
+.description-container {
   width: calc(100vw - 300px);
   margin: 0.5rem;
   overflow-y: scroll;
 }
-.details{
+
+.details {
   margin-bottom: 0.5rem;
   background: #212429;
 }
 
-@media screen and (max-width: 600px){
-  .wrapper{
+@media screen and (max-width: 600px) {
+  .wrapper {
     flex-direction: column;
+    overflow-y: scroll;
   }
-  .sidebar{
+
+  .sidebar {
     width: auto;
   }
-  .description-container{
+
+  .description-container {
+    width: auto;
+    overflow-y: unset;
+  }
+
+  .details {
     width: auto;
   }
-  .details{
-    width: auto;
-  }
-  .forecast{
+
+  .forecast {
     width: auto;
   }
 }

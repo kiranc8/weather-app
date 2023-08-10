@@ -3,18 +3,21 @@ import { useState, useEffect } from "react";
 import Sidebar from "./components/Sidebar";
 import Details from "./components/Details";
 import Forecast from "./components/Forecast";
+import ErrorPage from "./components/ErrorPage"
 import { WeatherContext } from "./components/WeatherContext";
 import "./App.css";
-const API_KEY = "19d7ecfcef78b9ced33cb88e5641582d";
+export const API_KEY = process.env.REACT_APP_API_KEY;
+
 
 function App() {
   const [weatherData, setWeatherData] = useState();
+  const [forecast, setForecast] = useState([]);
   const [place, setPlace] = useState("New York");
+  const [cityFound,setCityFound] = useState(true);
 
   const API_URL = `https://api.openweathermap.org/data/2.5/weather?q=${place}&appid=${API_KEY}&units=metric`;
-  useEffect(() => {
-    dataFetch();
-  }, []);
+  const FORECAST_API_URL = `https://api.openweathermap.org/data/2.5/forecast?q=${place}&appid=${API_KEY}&units=metric`
+
   const dataFetch = () => {
     fetch(API_URL)
       .then((response) => {
@@ -24,18 +27,38 @@ function App() {
         return response.json();
       })
       .then((data) => {
+        setCityFound(true)
         setWeatherData(data);
-        console.log(data);
       })
       .catch((error) => {
         console.error(error);
-        setPlace('New York'); 
-        dataFetch(); 
+        setCityFound(false)
+        // setPlace("New York");
+        // dataFetch();
+        
       });
   };
+
+  const fetchForecastData = ()=>{
+    fetch(FORECAST_API_URL)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        const fiveDayForecast = data.list.filter((item) =>
+          item.dt_txt.includes("12:00")
+        );
+        setForecast(fiveDayForecast);
+      });
+  }
+  
+  useEffect(() => {
+    dataFetch();
+    fetchForecastData();
+  }, []);
+  
   return (
     <WeatherContext.Provider value={{ place, setPlace }}>
-      <div className="wrapper">
+      {cityFound?(<div className="wrapper">
         <div className="sidebar">
           <Sidebar data={weatherData} fetchData={dataFetch} />
         </div>
@@ -44,10 +67,10 @@ function App() {
             <Details data={weatherData} />
           </div>
           <div className="forecast">
-            <Forecast />
+            <Forecast data ={forecast}/>
           </div>
         </div>
-      </div>
+      </div>):(<ErrorPage/>)}
     </WeatherContext.Provider>
   );
 }
