@@ -7,7 +7,7 @@ This is a simple React application that displays weather information for a selec
 - Display current weather information for a selected city.
 - Handles errors gracefully when a city is not found.
 
-## Technoloies
+## Technologies
 
 Technologies used: HTML, CSS , JavaScript ,Reactjs
 
